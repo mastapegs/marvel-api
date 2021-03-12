@@ -4,7 +4,8 @@ import marvelFetch from './marvelFetch'
 export class AppComponent extends LitElement {
   static get properties() {
     return {
-      characters: { type: Array }
+      characters: { type: Array },
+      numberOfCharacters: { type: Number },
     }
   }
   constructor() {
@@ -14,6 +15,8 @@ export class AppComponent extends LitElement {
   }
   async __getCharacters() {
     const characterData = await marvelFetch()
+    console.log(characterData)
+    this.numberOfCharacters = characterData.data.total
     this.characters = characterData.data.results.map(character => ({
       name: character.name,
       url: character.resourceURI,
@@ -23,7 +26,7 @@ export class AppComponent extends LitElement {
     return html`
       <ul>
         ${this.characters.map(character => html`
-          <li><a href=${character.url}>${character.name}</a></li>
+        <li><a href=${character.url}>${character.name}</a></li>
         `)}
       </ul>
     `
@@ -32,6 +35,7 @@ export class AppComponent extends LitElement {
     return html`
       <h1>Concurrent JavaScript</h1>
       <p>Let's render Marvel characters using concurrent JavaScript</p>
+      <p>Number of Marvel characters: ${this.numberOfCharacters}</p>
       ${this.characters.length !== 0 ? this.__renderCharacters() : null}
     `
   }
