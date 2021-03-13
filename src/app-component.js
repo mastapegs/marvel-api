@@ -20,13 +20,17 @@ export class AppComponent extends LitElement {
     this.characters = characterData.data.results.map(character => ({
       name: character.name,
       url: character.resourceURI,
+      imageUrl: `${character.thumbnail.path}.${character.thumbnail.extension}`
     }))
   }
   __renderCharacters() {
     return html`
       <ul>
         ${this.characters.map(character => html`
-        <li><a href=${character.url}>${character.name}</a></li>
+        <li>
+          <a href=${character.url}>${character.name}</a>
+          <img src=${character.imageUrl}>
+        </li>
         `)}
       </ul>
     `
